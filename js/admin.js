@@ -1,15 +1,16 @@
 
 // ==================== ADMIN PANEL LOGIC ====================
 
-// \u26a0\ufe0f MASTER CONFIG \u26a0\ufe0f
+// ⚠️ MASTER CONFIG ⚠️
 // This points to YOUR central Firebase where you store client list.
 // YOU MUST REPLACE THIS WITH YOUR OWN FIREBASE CONFIG FOR THE MASTER DB
 const MASTER_FIREBASE_CONFIG = {
-    // TODO: Replace with the Product Owner's (User's) Master Firebase Config
-    apiKey: "AIzaSyCnlCjW_YwafFJsj1abHFl5DiwxM1EmLUM",
-    authDomain: "magadhlibrary-22d4f.firebaseapp.com",
-    projectId: "magadhlibrary-22d4f",
-    databaseURL: "https://magadhlibrary-22d4f-default-rtdb.asia-southeast1.firebasedatabase.app",
+    apiKey: "AIzaSyBeiLpzkmwv2zHhdN4Udt6LVGxuz4PF_9U",
+    authDomain: "saraswatilibrary.firebaseapp.com",
+    projectId: "saraswatilibrary",
+    storageBucket: "saraswatilibrary.firebasestorage.app",
+    messagingSenderId: "596543784299",
+    appId: "1:596543784299:web:955dd8b8b4ee43d571f82e"
 };
 
 // Initialize Master App
@@ -137,9 +138,33 @@ addClientForm.addEventListener('submit', async (e) => {
 
     let firebaseConfigJson;
     try {
-        firebaseConfigJson = JSON.parse(firebaseConfigStr);
+        // Try to extract object from JS code if pasted as full block
+        const cleanStr = firebaseConfigStr.trim();
+        // Regex to find "const firebaseConfig = { ... };" or just "{ ... }"
+        const match = cleanStr.match(/firebaseConfig\s*=\s*({[\s\S]*?});?/);
+
+        let jsonStr = match ? match[1] : cleanStr;
+
+        // Fix loose JSON (keys without quotes) if necessary, though Firebase gives valid JS which is not valid JSON
+        // We need to ensure we can parse it.
+        // Firebase console output is usually valid JS object syntax: apiKey: "..." (no quotes on key)
+        // JSON.parse requires quotes: "apiKey": "..."
+
+        // Simple heuristic: If it doesn't look like strict JSON (keys have quotes), try to convert JS obj to JSON
+        if (!jsonStr.includes('"apiKey"')) {
+            // Basic strict-ify: quote unquoted keys
+            jsonStr = jsonStr.replace(/(\w+):/g, '"$1":');
+            // Remove trailing commas if any (JSON doesn't allow them)
+            jsonStr = jsonStr.replace(/,(\s*})/g, '$1');
+            // Convert single quotes to double
+            jsonStr = jsonStr.replace(/'/g, '"');
+        }
+
+        firebaseConfigJson = JSON.parse(jsonStr);
+
     } catch (err) {
-        return alert("Invalid Firebase Config JSON. Check for missing commas or quotes.");
+        console.error(err);
+        return alert("Could not parse Firebase Config. Please ensure you pasted the 'firebaseConfig' object correctly.");
     }
 
     const clientData = {
