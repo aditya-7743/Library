@@ -154,7 +154,8 @@ addClientForm.addEventListener('submit', async (e) => {
         // Simple heuristic: If it doesn't look like strict JSON (keys have quotes), try to convert JS obj to JSON
         if (!jsonStr.includes('"apiKey"')) {
             // Basic strict-ify: quote unquoted keys
-            jsonStr = jsonStr.replace(/(\w+):/g, '"$1":');
+            // Only quote known Firebase keys to avoid breaking values like "appId": "1:..."
+            jsonStr = jsonStr.replace(/(apiKey|authDomain|projectId|storageBucket|messagingSenderId|appId|measurementId|databaseURL)\s*:/g, '"$1":');
             // Remove trailing commas if any (JSON doesn't allow them)
             jsonStr = jsonStr.replace(/,(\s*})/g, '$1');
             // Convert single quotes to double
