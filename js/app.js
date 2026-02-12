@@ -57,15 +57,20 @@ LMS.TopNavbar = ({ currentPage, setCurrentPage, onLogout, isMobileOpen, setIsMob
   const { settings, showToast } = useContext(LMS.AppContext);
   const { Icons } = LMS;
 
-  const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: Icons.Dashboard },
-    { id: 'students', label: 'Students', icon: Icons.Students },
-    { id: 'seats', label: 'Seats & Halls', icon: Icons.Seats },
-    { id: 'accounts', label: 'Accounts', icon: Icons.Payments },
-    { id: 'attendance', label: 'Attendance', icon: Icons.Log },
-    { id: 'activity', label: 'Activity', icon: Icons.Log },
-    { id: 'settings', label: 'Settings', icon: Icons.Settings },
+  // Feature Flags
+  const features = window.LMS_CLIENT_CONFIG?.enabledFeatures || ['students', 'seats', 'payments', 'attendance', 'reports', 'settings'];
+
+  const allMenuItems = [
+    { id: 'dashboard', label: 'Dashboard', icon: Icons.Dashboard, feature: null }, // Always enabled
+    { id: 'students', label: 'Students', icon: Icons.Students, feature: 'students' },
+    { id: 'seats', label: 'Seats & Halls', icon: Icons.Seats, feature: 'seats' },
+    { id: 'accounts', label: 'Accounts', icon: Icons.Payments, feature: 'payments' },
+    { id: 'attendance', label: 'Attendance', icon: Icons.Log, feature: 'attendance' },
+    { id: 'activity', label: 'Activity', icon: Icons.Log, feature: 'reports' },
+    { id: 'settings', label: 'Settings', icon: Icons.Settings, feature: 'settings' },
   ];
+
+  const menuItems = allMenuItems.filter(item => !item.feature || features.includes(item.feature));
 
   const handleNavClick = (id) => {
     setCurrentPage(id);
