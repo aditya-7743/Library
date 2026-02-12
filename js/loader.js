@@ -3,11 +3,12 @@
 
 // 1. MASTER CONFIG (Same as Admin Panel)
 const MASTER_FIREBASE_CONFIG = {
-    // TODO: Replace with the Product Owner's (User's) Master Firebase Config
-    apiKey: "AIzaSyCnlCjW_YwafFJsj1abHFl5DiwxM1EmLUM",
-    authDomain: "magadhlibrary-22d4f.firebaseapp.com",
-    projectId: "magadhlibrary-22d4f",
-    databaseURL: "https://magadhlibrary-22d4f-default-rtdb.asia-southeast1.firebasedatabase.app",
+    apiKey: "AIzaSyBeiLpzkmwv2zHhdN4Udt6LVGxuz4PF_9U",
+    authDomain: "saraswatilibrary.firebaseapp.com",
+    projectId: "saraswatilibrary",
+    storageBucket: "saraswatilibrary.firebasestorage.app",
+    messagingSenderId: "596543784299",
+    appId: "1:596543784299:web:955dd8b8b4ee43d571f82e"
 };
 
 (function () {
