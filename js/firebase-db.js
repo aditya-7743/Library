@@ -195,23 +195,32 @@ LMS.DB = {
     Object.keys(this.listeners).forEach(key => this.detachListener(key));
   },
 
-  // Local storage fallback
+  // Local storage fallback with Client Isolation
+  _getLocalKey(key) {
+    // If we have a client ID, namespace the data: lms_clientA_students
+    if (window.LMS_CLIENT_CONFIG && window.LMS_CLIENT_CONFIG.clientId) {
+      return `lms_${window.LMS_CLIENT_CONFIG.clientId}_${key}`;
+    }
+    // Fallback for legacy/single-tenant
+    return `lms_${key}`;
+  },
+
   localSave(key, data) {
     try {
-      localStorage.setItem('lms_' + key, JSON.stringify(data));
+      localStorage.setItem(this._getLocalKey(key), JSON.stringify(data));
       return true;
     } catch (e) { return false; }
   },
 
   localLoad(key, defaultValue) {
     try {
-      const item = localStorage.getItem('lms_' + key);
+      const item = localStorage.getItem(this._getLocalKey(key));
       return item ? JSON.parse(item) : (defaultValue !== undefined ? defaultValue : null);
     } catch (e) { return defaultValue !== undefined ? defaultValue : null; }
   },
 
   localRemove(key) {
-    localStorage.removeItem('lms_' + key);
+    localStorage.removeItem(this._getLocalKey(key));
   },
 
   // Sync a single item (Granular Update) - FAST & SAFE
