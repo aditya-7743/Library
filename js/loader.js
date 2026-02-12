@@ -3,12 +3,11 @@
 
 // 1. MASTER CONFIG (Same as Admin Panel)
 const MASTER_FIREBASE_CONFIG = {
-    apiKey: "AIzaSyBeiLpzkmwv2zHhdN4Udt6LVGxuz4PF_9U",
-    authDomain: "saraswatilibrary.firebaseapp.com",
-    projectId: "saraswatilibrary",
-    storageBucket: "saraswatilibrary.firebasestorage.app",
-    messagingSenderId: "596543784299",
-    appId: "1:596543784299:web:955dd8b8b4ee43d571f82e"
+    // ⚠️ REPLACE THIS WITH YOUR *MASTER* FIREBASE CONFIG ⚠️
+    apiKey: "YOUR_MASTER_API_KEY",
+    authDomain: "your-master-project.firebaseapp.com",
+    projectId: "your-master-project",
+    databaseURL: "https://your-master-project-default-rtdb.firebaseio.com",
 };
 
 (function () {
