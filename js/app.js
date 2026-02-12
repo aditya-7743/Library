@@ -23,8 +23,17 @@ function initializeApp() {
   // Check authentication state
   LMS.DB.auth.onAuthStateChanged(user => {
     // Render the main app component after Firebase is initialized and auth state is known
-    const root = ReactDOM.createRoot(document.getElementById('app'));
-    root.render(html`<${LMS.App} />`);
+    const container = document.getElementById('app');
+
+    // Prevent "createRoot(...): Target container is not a DOM element." (Safety check)
+    if (!container) return;
+
+    // React 18: Ensure we only create root once to avoid Error #299
+    if (!window.LMS.appRoot) {
+      window.LMS.appRoot = ReactDOM.createRoot(container);
+    }
+
+    window.LMS.appRoot.render(html`<${LMS.App} />`);
   });
 }
 
