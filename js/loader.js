@@ -40,7 +40,28 @@ const MASTER_FIREBASE_CONFIG = {
     const db = masterApp.database();
 
     // 4. Fetch Client Properties
+    const statusEl = document.createElement('div');
+    statusEl.style.cssText = "position:fixed;bottom:10px;right:10px;color:gray;font-size:10px;z-index:9999;";
+    statusEl.innerText = "Connecting to Master Config...";
+    document.body.appendChild(statusEl);
+
+    const timeoutId = setTimeout(() => {
+        document.body.innerHTML = `
+            <div style="color:white;text-align:center;padding-top:20vh;font-family:sans-serif;">
+                <h1>Connection Timeout</h1>
+                <p>Could not fetch client configuration.</p>
+                <p>Possible causes:</p>
+                <ul style="text-align:left;display:inline-block;">
+                    <li>Database Rules are locked (Check Firebase Console > Realtime Database > Rules).</li>
+                    <li>Internet connection is unstable.</li>
+                    <li>Invalid Master Config API Key.</li>
+                </ul>
+                <button onclick="location.reload()" style="margin-top:20px;padding:10px 20px;cursor:pointer;">Retry</button>
+            </div>`;
+    }, 8000);
+
     db.ref(`clients/${clientId}`).once('value').then(snapshot => {
+        clearTimeout(timeoutId);
         const clientData = snapshot.val();
 
         if (!clientData) {
@@ -48,34 +69,35 @@ const MASTER_FIREBASE_CONFIG = {
             return;
         }
 
+        statusEl.innerText = "Config Loaded. Initializing App...";
         console.log("Client config loaded:", clientData.name);
 
-        // 5. Apply Theme (CSS Variables)
+        // 5. Apply Theme
         if (clientData.theme) {
             const root = document.documentElement;
             root.style.setProperty('--primary-color', clientData.theme.primary);
             root.style.setProperty('--secondary-color', clientData.theme.secondary);
-
-            // Allow Tailwind to pick up changes via style attribute binding if needed
-            // But main CSS uses variables, so this is fine.
         }
 
-        // 6. Stash Config for App to use
+        // 6. Stash Config
         window.LMS_CLIENT_CONFIG = clientData;
 
-        // 7. Initialize the REAL Firebase App (The Client's App)
-        // We defer this to firebase-db.js or do it here. 
-        // Better to let firebase-db.js handle it, but we need to pass the config.
-
-        // Dispatch event that config is ready
+        // 7. Dispatch Event
         window.dispatchEvent(new CustomEvent('lms:configReady', { detail: clientData }));
 
-        // Update Page Title
+        // Update Title
         document.title = `${clientData.name} - LMS`;
+        statusEl.remove();
 
     }).catch(err => {
+        clearTimeout(timeoutId);
         console.error("Failed to load client config:", err);
-        document.body.innerHTML = `<h1 style="color:white;text-align:center;">Error loading configuration</h1>`;
+        document.body.innerHTML = `
+            <div style="color:white;text-align:center;margin-top:20%;font-family:sans-serif;">
+                <h1>Configuration Load Error</h1>
+                <p style="color:#f87171;">${err.message}</p>
+                <p style="color:#94a3b8;font-size:0.9em;">(Check Admin Console Logic or Database Rules)</p>
+            </div>`;
     });
 
 })();
