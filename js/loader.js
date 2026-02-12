@@ -9,7 +9,7 @@ const MASTER_FIREBASE_CONFIG = {
     storageBucket: "magadhlibrary-12a08.firebasestorage.app",
     messagingSenderId: "1028338567572",
     appId: "1:1028338567572:web:2e3f4417433ceb3db5a781",
-    databaseURL: "https://magadhlibrary-12a08-default-rtdb.firebaseio.com"
+    databaseURL: "https://magadhlibrary-12a08-default-rtdb.asia-southeast1.firebasedatabase.app"
 };
 
 (function () {
