@@ -1,4 +1,3 @@
-
 const CACHE_NAME = 'lms-v2';
 const urlsToCache = [
     './',
@@ -22,13 +21,7 @@ const urlsToCache = [
     './js/settings.js',
     './js/chatbot.js',
     './js/app.js',
-    'https://cdn.tailwindcss.com',
-    'https://unpkg.com/react@18/umd/react.production.min.js',
-    'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js',
-    'https://unpkg.com/htm@3/dist/htm.js',
-    'https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js',
-    'https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js',
-    'https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js'
+    './js/app.js'
 ];
 
 self.addEventListener('install', event => {
@@ -75,3 +68,4 @@ self.addEventListener('activate', event => {
         })
     );
 });
+
