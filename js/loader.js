@@ -3,11 +3,13 @@
 
 // 1. MASTER CONFIG (Same as Admin Panel)
 const MASTER_FIREBASE_CONFIG = {
-    // ⚠️ REPLACE THIS WITH YOUR *MASTER* FIREBASE CONFIG ⚠️
-    apiKey: "YOUR_MASTER_API_KEY",
-    authDomain: "your-master-project.firebaseapp.com",
-    projectId: "your-master-project",
-    databaseURL: "https://your-master-project-default-rtdb.firebaseio.com",
+    apiKey: "AIzaSyCKAo6SSf9L3ojktZiyo0_cBvVYlP_YifU",
+    authDomain: "magadhlibrary-12a08.firebaseapp.com",
+    projectId: "magadhlibrary-12a08",
+    storageBucket: "magadhlibrary-12a08.firebasestorage.app",
+    messagingSenderId: "1028338567572",
+    appId: "1:1028338567572:web:2e3f4417433ceb3db5a781",
+    databaseURL: "https://magadhlibrary-12a08-default-rtdb.firebaseio.com"
 };
 
 (function () {
